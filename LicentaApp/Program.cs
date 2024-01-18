@@ -60,6 +60,14 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 
+//  CREATE
+app.MapPost("/product", async (ApplicationDbContext db, Product p) =>
+{
+    db.Products.Add(p);
+    await db.SaveChangesAsync();
+
+    return Results.Created($"/product/{p.Id}", p);
+});
 
 //  CREATE
 app.MapPost("/restaurant", async (ApplicationDbContext db, Restaurant r) =>

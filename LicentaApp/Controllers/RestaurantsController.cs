@@ -2,6 +2,7 @@
 using LicentaApp.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace LicentaApp.Controllers
 {
@@ -22,7 +23,9 @@ namespace LicentaApp.Controllers
         }
         public IActionResult Show(Guid id)
         {
-            Restaurant rest = db.Restaurants.Where(r => r.Id == id)
+            Restaurant rest = db.Restaurants.Include("MenuProducts")
+                                            .Include("MenuProducts.Product")
+                                            .Where(r => r.Id == id)
                                             .First();
 
             return View(rest);

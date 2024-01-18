@@ -3,3 +3,25 @@
 <div class="card">
     @Html.Partial("RestaurantPartial", Model) 
 </div>
+
+
+@if (Model.MenuProducts is not null)
+    @foreach (var mp in Model.MenuProducts)
+    {
+        Console.WriteLine(mp.ProductId);
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <div>
+                        <p>@mp.Product.Name</p>
+                        <small>@mp.Product.Category</small>
+                        <strong><i class="bi bi-person"></i>@mp.Product.Cost</strong>
+                    </div>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+        </div>
+    }
+else
+    Console.WriteLine("not ok!!");
