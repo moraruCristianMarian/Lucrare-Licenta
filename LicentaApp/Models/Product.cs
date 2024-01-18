@@ -1,20 +1,23 @@
 ﻿namespace LicentaApp.Models
 {
-    public class Restaurant
+    public class Product
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public string City { get; set; }
+        public string Category { get; set; }
+        public float Cost { get; set; }
+
 
         public virtual ICollection<MenuProduct>? MenuProducts { get; set; }
 
 
-        public Restaurant(string name, string city)
+        public Product(string name, string category, float cost)
         {
             Id = Guid.NewGuid();
 
             Name = name;
-            City = city;
+            Category = category;
+            Cost = cost;
         }
     }
 }
