@@ -1,4 +1,5 @@
 using LicentaApp.Data;
+using LicentaApp.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -45,11 +46,6 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapGet("/test", () =>
-{
-    return "Test test!";
-});
-
 
 app.MapControllerRoute(
     name: "restaurants",
@@ -62,5 +58,52 @@ app.MapControllerRoute(
 
 
 app.MapRazorPages();
+
+
+
+//  CREATE
+app.MapPost("/restaurant", async (ApplicationDbContext db, Restaurant r) =>
+{
+    db.Restaurants.Add(r);
+    await db.SaveChangesAsync();
+
+    return Results.Created($"/restaurant/{r.Id}", r);
+});
+
+//  READ ALL
+app.MapGet("/restaurant", async (ApplicationDbContext db) =>
+{
+    return await db.Restaurants.ToListAsync();
+});
+//  READ ONE
+app.MapGet("/restaurant/{id}", (ApplicationDbContext db, Guid id) =>
+{
+    return db.Restaurants.Find(id);
+});
+
+//  UPDATE
+app.MapPut("/restaurant/{id}", async (ApplicationDbContext db, Restaurant r, Guid id) =>
+{
+    var updatedRestaurant = db.Restaurants.Find(id);
+    if (updatedRestaurant == null)
+        return;
+
+    updatedRestaurant.Name = r.Name;
+    updatedRestaurant.City = r.City;
+
+    await db.SaveChangesAsync();
+});
+
+//  DELETE
+app.MapDelete("/restaurant/{id}", async (ApplicationDbContext db, Guid id) =>
+{
+    var deletedRestaurant = db.Restaurants.Find(id);
+    if (deletedRestaurant == null)
+        return;
+
+    db.Restaurants.Remove(deletedRestaurant);
+    await db.SaveChangesAsync();
+});
+
 
 app.Run();
