@@ -9,6 +9,7 @@
 
 
         public virtual ICollection<MenuProduct>? MenuProducts { get; set; }
+        public virtual ICollection<IngredientInProduct>? IngredientInProducts { get; set; }
 
 
         public Product(string name, string category, float cost)
