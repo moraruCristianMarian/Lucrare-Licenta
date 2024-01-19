@@ -19,6 +19,9 @@ namespace LicentaApp.Controllers
 
         public IActionResult Index()
         {
+            var restaurants = db.Restaurants;
+            ViewBag.Restaurants = restaurants;
+
             return View();
         }
         public IActionResult Show(Guid id)

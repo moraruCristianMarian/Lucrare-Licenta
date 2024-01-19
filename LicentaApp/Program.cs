@@ -53,6 +53,11 @@ app.MapControllerRoute(
     defaults: new { controller = "Restaurants", action = "Index" });
 
 app.MapControllerRoute(
+    name: "products",
+    pattern: "products",
+    defaults: new { controller = "Products", action = "Index" });
+
+app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
@@ -60,14 +65,6 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 
-//  CREATE
-app.MapPost("/product", async (ApplicationDbContext db, Product p) =>
-{
-    db.Products.Add(p);
-    await db.SaveChangesAsync();
-
-    return Results.Created($"/product/{p.Id}", p);
-});
 
 //  CREATE
 app.MapPost("/restaurant", async (ApplicationDbContext db, Restaurant r) =>
@@ -77,12 +74,46 @@ app.MapPost("/restaurant", async (ApplicationDbContext db, Restaurant r) =>
 
     return Results.Created($"/restaurant/{r.Id}", r);
 });
+//  CREATE
+app.MapPost("/product", async (ApplicationDbContext db, Product p) =>
+{
+    db.Products.Add(p);
+    await db.SaveChangesAsync();
+
+    return Results.Created($"/product/{p.Id}", p);
+});
+//  CREATE
+app.MapPost("/ingredient", async (ApplicationDbContext db, Ingredient i) =>
+{
+    db.Ingredients.Add(i);
+    await db.SaveChangesAsync();
+
+    return Results.Created($"/ingredient/{i.Id}", i);
+});
+//  CREATE
+app.MapPost("/menuproduct", async (ApplicationDbContext db, MenuProduct mp) =>
+{
+    db.MenuProducts.Add(mp);
+    await db.SaveChangesAsync();
+
+    return Results.Created($"/menuproduct/{mp.ProductId}_{mp.RestaurantId}", mp);
+});
+//  CREATE
+app.MapPost("/ingredientinproduct", async (ApplicationDbContext db, IngredientInProduct iip) =>
+{
+    db.IngredientInProducts.Add(iip);
+    await db.SaveChangesAsync();
+
+    return Results.Created($"/ingredientinproduct/{iip.IngredientId}_{iip.ProductId}", iip);
+});
+
 
 //  READ ALL
 app.MapGet("/restaurant", async (ApplicationDbContext db) =>
 {
     return await db.Restaurants.ToListAsync();
 });
+
 //  READ ONE
 app.MapGet("/restaurant/{id}", (ApplicationDbContext db, Guid id) =>
 {
