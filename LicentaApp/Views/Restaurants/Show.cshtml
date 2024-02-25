@@ -14,3 +14,18 @@
                 @Html.Partial("ProductPartial", mp.Product)
     </div>
 }
+
+@if (Model.Images is not null)
+{
+    @foreach (var image in Model.Images)
+    {
+        <image src="/img/@image.FilePath" alt="(Restaurant image)"></image>
+
+        <p>@image.Description</p>
+        <p>@image.UploadDate</p>
+    }
+}
+else
+{
+    <p>No images.</p>
+}

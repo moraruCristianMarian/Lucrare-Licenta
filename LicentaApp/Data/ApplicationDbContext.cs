@@ -12,6 +12,7 @@ namespace LicentaApp.Data
         public DbSet<MenuProduct> MenuProducts { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<IngredientInProduct> IngredientInProducts { get; set; }
+        public DbSet<Image> Images { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -30,12 +31,12 @@ namespace LicentaApp.Data
             // Foreign keys to Restaurant and Product
             modelBuilder.Entity<MenuProduct>()
                 .HasOne(mp => mp.Product)
-                .WithMany(mp => mp.MenuProducts)
+                .WithMany(p => p.MenuProducts)
                 .HasForeignKey(mp => mp.ProductId);
 
             modelBuilder.Entity<MenuProduct>()
                 .HasOne(mp => mp.Restaurant)
-                .WithMany(mp => mp.MenuProducts)
+                .WithMany(r => r.MenuProducts)
                 .HasForeignKey(mp => mp.RestaurantId);
 
 
@@ -51,13 +52,29 @@ namespace LicentaApp.Data
             // Foreign keys to Restaurant and Product
             modelBuilder.Entity<IngredientInProduct>()
                 .HasOne(iip => iip.Ingredient)
-                .WithMany(iip => iip.IngredientInProducts)
+                .WithMany(i => i.IngredientInProducts)
                 .HasForeignKey(iip => iip.IngredientId);
 
             modelBuilder.Entity<IngredientInProduct>()
                 .HasOne(iip => iip.Product)
-                .WithMany(iip => iip.IngredientInProducts)
+                .WithMany(p => p.IngredientInProducts)
                 .HasForeignKey(iip => iip.ProductId);
+
+
+
+            // ==================================================================
+            // IMAGE
+            // ==================================================================
+            // Primary key
+            modelBuilder.Entity<Image>()
+                .HasKey(i => new { i.Id });
+
+
+            // Foreign key to Restaurant
+            modelBuilder.Entity<Image>()
+                .HasOne(i => i.Restaurant)
+                .WithMany(r => r.Images)
+                .HasForeignKey(i => i.RestaurantId);
         }
     }
 }

@@ -7,6 +7,7 @@
         public string City { get; set; }
 
         public virtual ICollection<MenuProduct>? MenuProducts { get; set; }
+        public virtual ICollection<Image>? Images { get; set; }
 
 
         public Restaurant(string name, string city)

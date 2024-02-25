@@ -28,6 +28,7 @@ namespace LicentaApp.Controllers
         {
             Restaurant rest = db.Restaurants.Include("MenuProducts")
                                             .Include("MenuProducts.Product")
+                                            .Include("Images")
                                             .Where(r => r.Id == id)
                                             .First();
 
